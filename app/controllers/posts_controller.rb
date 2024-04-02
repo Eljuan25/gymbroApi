@@ -1,46 +1,55 @@
 class PostsController < ApplicationController
-    before_action  :set_post, only: %i[show edit update destroy]
+    before_action :set_post , only:  %i[show edit update destroy]
 
-
-def index 
-    @posts = Post.find(params[:id])
-    render json: @post
-end
-
-def new
-
-    @post = Post.new
-end
-
-def edit
-end
-
-def create
-    @post = Post.new(post_params)
-end
-
-def update
-    if @post.update(post_params)
-        redirect_to @post 
-    else
-        render :edit
+    def index 
+        @posts = Post.all
+        render json: @posts
     end
-end
-
-def destroy
-    @post.destroy
-    redirect_to post_url
-end
-
-private
-
-def set_post
-    @post = Post.find(paramas[:id])
-
-end
-
-def post_params
-    params.requier(:post).permit(:description, id_user)
 
 
-end
+    def show 
+       @post = Post.fin(params[:id])
+    end
+
+    def new
+        @post = Post.new
+    end
+
+    
+
+    def edit 
+    end  
+
+    def create
+        @post = Post.new(post_params)
+        if @post.save
+            render json: @post, status: :created, location: @post
+        else
+            render :new
+        end
+    end
+
+    def update
+        if @post.update(post_params)
+            render json: @post
+        else
+        render :edit
+        end
+    end
+
+    def destroy
+        @post.destroy
+        head :no_content
+    end
+
+    private
+
+    def set_post
+        @post = Post.find(params[:id])
+    end
+
+    def post_params
+        params.require(:posts).permit(:description, :user_id)
+    end    
+end 
+
