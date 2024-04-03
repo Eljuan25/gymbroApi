@@ -8,7 +8,10 @@ class UsersController < ApplicationController
     end
 
     def show 
-        @users = User.find(params[:id])
+        @user = User.find(params[:id])
+        #binding.irb
+        render json:  @user.as_json.merge(avatar_url: url_for(@user.avatar))
+
     end
 
     def new 
@@ -20,8 +23,10 @@ class UsersController < ApplicationController
     end
 
     def create
-        #binding.irb
+        
         @user = User.new(user_params)
+        @user.avatar.attach(params[:avatar])
+
        
         if @user.save
           render json: @user, status: :created
