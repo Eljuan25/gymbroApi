@@ -1,17 +1,15 @@
 class UsersController < ApplicationController
-    before_action :set_user, only: %i[show edit update destroy]
-
+    before_action :set_user, only: %i[show edit update destroy ]
+     
     def index
-        @users = User.all
-        
+        @users = User.all       
         render json: @users
     end
 
     def show 
-        @user = User.find(params[:id])
+   
         #binding.irb
         render json:  @user.as_json.merge(avatar_url: url_for(@user.avatar))
-
     end
 
     def new 
@@ -22,12 +20,10 @@ class UsersController < ApplicationController
     def edit
     end
 
-    def create
-        
-        @user = User.new(user_params)
-        @user.avatar.attach(params[:avatar])
-
+    def create           
        
+        @user = User.new(user_params)
+        
         if @user.save
           render json: @user, status: :created
         else
@@ -51,6 +47,7 @@ class UsersController < ApplicationController
 
 
     private
+
     def set_user
         @user = User.find(params[:id])
     end

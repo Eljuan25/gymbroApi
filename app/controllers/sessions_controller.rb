@@ -7,9 +7,6 @@ class SessionsController < ApplicationController
 
 
     end
-
-    
-    
     
     def create
       @user = User.find_for_database_authentication(email: params[:email])
