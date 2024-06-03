@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
     before_action :set_user, only: %i[show edit update destroy ]
-     
     def index
         @users = User.all       
         render json: @users
@@ -21,8 +20,8 @@ class UsersController < ApplicationController
     end
 
     def create           
-       
-        @user = User.new(user_params)
+   
+       @user = User.new(users_params)
         
         if @user.save
           render json: @user, status: :created
@@ -30,8 +29,9 @@ class UsersController < ApplicationController
           render json: @user.errors, status: :unprocessable_entity
         end
       end
+
       
-        
+      
     def update
         if @user.update(user_params)
             redirect_to user_url(@user)
@@ -52,10 +52,9 @@ class UsersController < ApplicationController
         @user = User.find(params[:id])
     end
         
-    def user_params
-        params.require(:users).permit(:email, :password, :name ,:age, :avatar)
-    end
+    def users_params
+        params.require(:user).permit(:email, :password, :name, :age, :avatar)
+      end
 end
-
 
 
